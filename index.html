@@ -451,7 +451,16 @@
                 { question: "Which one of the following represents forward bias diode? ", options: ["(a) 
 
 [Image of a diode circuit]
-", "(b) ", "(c) ", "(d) "], answer: 0 },
+", "(b) 
+
+[Image of a diode circuit]
+", "(c) 
+
+[Image of a diode circuit]
+", "(d) 
+
+[Image of a diode circuit]
+"], answer: 0 },
                 { question: "The given electrical network is equivalent to ", options: ["AND gate", "OR gate", "NOR gate", "NOT gate"], answer: 1 },
                 { question: "The output of the following circuit is 1 when the input ABC is ", options: ["101", "100", "110", "010"], answer: 2 }
             ],
@@ -513,7 +522,7 @@
         let skippedQuestions = 0;
         let studentInfo = {};
 
-        // Define chapterNames for Physics (Moved outside for accessibility)
+        // Define chapterNames for Physics (Global definition for proper scope)
         const chapterNames = {
             "1": "Chapter 1: ELECTROSTATICS",
             "2": "Chapter 2: CURRENT ELECTRICITY",
@@ -537,18 +546,21 @@
         whatsappShareBtn.addEventListener('click', shareViaWhatsApp);
 
         function startQuiz() {
+            // Check if all fields are filled. If not, alert and stop.
             if (!studentNameInput.value.trim() || 
                 !schoolNameInput.value.trim() || 
                 !classSectionSelect.value) {
-                alert('Please fill in all fields');
+                alert('Please fill in all student information fields.');
                 return;
             }
+            
             studentInfo = {
                 name: studentNameInput.value.trim(),
                 school: schoolNameInput.value.trim(),
                 class: classSectionSelect.value
             };
             
+            // Populate chapter list dynamically
             chaptersListEl.innerHTML = '';
             for (const key in mcqData) {
                 const label = document.createElement('label');
@@ -561,6 +573,8 @@
                 label.appendChild(span);
                 chaptersListEl.appendChild(label);
             }
+            
+            // Transition from form to chapter selection
             formContainer.classList.add('hidden');
             chapterSelectionContainer.classList.remove('hidden');
         }
@@ -596,6 +610,7 @@
             totalQuestionsEl.textContent = questions.length;
             showQuestion();
             
+            // Transition to quiz container
             chapterSelectionContainer.classList.add('hidden');
             quizContainer.classList.remove('hidden');
         }
@@ -611,8 +626,8 @@
             if (imageMatch) {
                 // Remove the image tag from the question text
                 questionText = question.question.replace(imageMatch[0], '').trim();
-                // Create an HTML string for the image placeholder
-                imagePlaceholder = `<div class="image-placeholder">Diagram/Figure Placeholder: ${imageMatch[1]}</div>`;
+                // Create an HTML string for the image placeholder (as requested)
+                imagePlaceholder = `<div class="image-placeholder">Diagram/Figure Required: ${imageMatch[1]}</div>`;
             }
 
             // Set the question text and append the image placeholder
@@ -645,7 +660,6 @@
                 });
 
                 radio.addEventListener('change', () => {
-                    // Disable all radios on selection
                     document.querySelectorAll('input[name="answer"]').forEach(r => {
                         r.disabled = true;
                     });
