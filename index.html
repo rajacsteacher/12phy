@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class 12 Physics MCQ Quiz (Chapterwise)</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #000;
+            color: #fff;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            max-width: 800px;
+            width: 100%;
+            margin: 0 auto;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            border-bottom: 2px solid #e74c3c;
+        }
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: #e74c3c;
+        }
+        .subtitle {
+            color: #aaa;
+            font-size: 1.2rem;
+        }
+        .form-container, .quiz-container, .result-container, #chapter-selection-container {
+            background-color: #111;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #e74c3c;
+        }
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #444;
+            background-color: #222;
+            color: #fff;
+            font-size: 1rem;
+        }
+        select:focus, input:focus {
+            outline: none;
+            border-color: #e74c3c;
+        }
+        .btn {
+            background: linear-gradient(to right, #e74c3c, #c0392b);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+            margin-top: 10px;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
+        }
+        .btn:active {
+            transform: translateY(0);
+        }
+        .btn-submit {
+            background: linear-gradient(to right, #27ae60, #2ecc71);
+        }
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #333;
+        }
+        .question-counter {
+            background: #222;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+        .question-text {
+            font-size: 1.4rem;
+            line-height: 1.6;
+            margin-bottom: 25px;
+            padding: 15px;
+            background: #1a1a1a;
+            border-radius: 10px;
+        }
+        .image-placeholder {
+            margin-top: 15px;
+            padding: 10px;
+            border: 1px dashed #e74c3c;
+            background-color: #222;
+            color: #e74c3c;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .option {
+            padding: 15px;
+            background: #222;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+        }
+        .option:hover {
+            background: #2a2a2a;
+        }
+        .option input {
+            margin-right: 15px;
+            width: auto;
+            height: 20px;
+            cursor: pointer;
+        }
+        .option label {
+            cursor: pointer;
+            font-size: 1.1rem;
+            color: #ddd;
+            font-weight: normal;
+        }
+        .feedback {
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: 600;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .correct-feedback {
+            background-color: #27ae60;
+            color: white;
+        }
+        .incorrect-feedback {
+            background-color: #e74c3c;
+            color: white;
+        }
+        .result-container {
+            text-align: center;
+        }
+        .result-title {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #e74c3c;
+        }
+        .result-details {
+            font-size: 1.3rem;
+            line-height: 2;
+            margin-bottom: 30px;
+        }
+        .result-details span {
+            color: #e74c3c;
+            font-weight: 600;
+        }
+        .hidden {
+            display: none;
+        }
+        #chapters-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        #chapters-list label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+        #chapters-list input[type="checkbox"] {
+            margin-right: 10px;
+            width: auto;
+        }
+        @media (max-width: 600px) {
+            .container {
+                padding: 0 15px;
+            }
+            h1 {
+                font-size: 2rem;
+            }
+            .question-text {
+                font-size: 1.2rem;
+            }
+            .option label {
+                font-size: 1rem;
+            }
+            .btn {
+                width: 100%;
+                padding: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Class 12 Physics MCQ Quiz</h1>
+            <p class="subtitle">Test your knowledge with chapter-wise multiple choice questions</p>
+        </header>
+        <div id="form-container" class="form-container">
+            <h2>Student Information</h2>
+            <div class="form-group">
+                <label for="student-name">Full Name</label>
+                <input type="text" id="student-name" placeholder="Enter your full name" required>
+            </div>
+            <div class="form-group">
+                <label for="school-name">School Name</label>
+                <input type="text" id="school-name" placeholder="Enter your school name" required>
+            </div>
+            <div class="form-group">
+                <label for="class-section">Class Section</label>
+                <select id="class-section" required>
+                    <option value="">Select your section</option>
+                    <option value="A">A</option>
+                    <option value="B">B</option>
+                    <option value="C">C</option>
+                    <option value="D">D</option>
+                    <option value="E">E</option>
+                </select>
+            </div>
+            <button id="start-quiz" class="btn">Start Quiz</button>
+        </div>
+        <div id="chapter-selection-container" class="form-container hidden">
+            <h2>Select Chapters for Quiz</h2>
+            <p>Select one or more chapters to include in your quiz:</p>
+            <div id="chapters-list"></div>
+            <button id="show-quiz-btn" class="btn">Show Quiz</button>
+        </div>
+        <div id="quiz-container" class="quiz-container hidden">
+            <div class="quiz-header">
+                <div class="question-counter">Question <span id="current-question">1</span> of <span id="total-questions">10</span></div>
+            </div>
+            <div id="question-text" class="question-text"></div>
+            <div id="options-container" class="options-container"></div>
+            <div id="feedback" class="feedback hidden"></div>
+            <button id="next-btn" class="btn">Next Question</button>
+        </div>
+        <div id="result-container" class="result-container hidden">
+            <h2 class="result-title">Quiz Results</h2>
+            <div class="result-details">
+                <p>Name: <span id="result-name"></span></p>
+                <p>School: <span id="result-school"></span></p>
+                <p>Class: <span id="result-class"></span></p>
+                <p>Chapter(s): <span id="result-chapter"></span></p>
+                <p>Score: <span id="result-score"></span></p>
+                <p>Correct Answers: <span id="result-correct"></span></p>
+                <p>Wrong Answers: <span id="result-wrong"></span></p>
+                <p>Skipped Questions: <span id="result-skipped"></span></p>
+            </div>
+            <button id="restart-btn" class="btn">Restart Quiz</button>
+            <button id="whatsapp-share-btn" class="btn" style="background: linear-gradient(to right, #25D366, #128C7E); margin-top: 15px;">Share via WhatsApp</button>
+        </div>
+    </div>
+    <script>
+        // MCQ data for all chapters (Physics)
+        const mcqData = {
+            "1": [ // ELECTROSTATICS
+                { question: "Two identical point charges of magnitude $-q$ are fixed as shown in the figure below. A third charge $+q$ is placed midway between the two charges at the point P. Suppose this charge $+q$ is displaced a small distance from the point P in the directions indicated by the arrows, in which direction(s) will $+q$ be stable with respect to the displacement? ", options: ["A1 and A2", "B1 and B2", "both directions", "No stable"], answer: 0 },
+                { question: "Which charge configuration produces a uniform electric field?", options: ["point Charge", "infinite uniform line charge", "uniformly charged infinite plane", "uniformly charged spherical shell"], answer: 2 },
+                { question: "What is the ratio of the charges for the following electric field line pattern? ", options: ["$1/5$", "$25/11$", "5", "$11/25$"], answer: 3 },
+                { question: "An electric dipole is placed at an alignment angle of $30^{\\circ}$ with an electric field of $2\\times10^5$ N C$^{-1}$. It experiences a torque equal to 8 N m. The charge on the dipole if the dipole length is 1 cm is", options: ["4 mC", "8 mC", "5 mC", "7 mC"], answer: 1 },
+                { question: "Four Gaussian surfaces are given below with charges inside each Gaussian surface. Rank the electric flux through each Gaussian surface in increasing order. ", options: ["$D<C<B<A$", "$A<B=C<D$", "$C<A=B<D$", "$D>C>B>A$"], answer: 1 },
+                { question: "The total electric flux for the following closed surface which is kept inside water ", options: ["less than before", "same as before", "more than before", "zero"], answer: 1 },
+                { question: "Two identical conducting balls having positive charges $q_1$ and $q_2$ are separated by a center to center distance $r$. If they are made to touch each other and then separated to the same distance, the force between them will be", options: ["less than before", "same as before", "more than before", "zero"], answer: 2 },
+                { question: "Rank the electrostatic potential energies for the given system of charges in increasing order. ", options: ["$1=4<2<3$", "$2=4<3<1$", "$2=3<1<4$", "$3<1<2<4$"], answer: 1 },
+                { question: "An electric field exists in a certain region of space. Then the potential difference $V=V_O-V_A,$ where $V_O$ is the potential at the origin and $V_A$ is the potential at $x = 2$ m is:", options: ["10 J", "-20 J", "+20 J", "-10 J"], answer: 1 },
+                { question: "A thin conducting spherical shell of radius R has a charge Q which is uniformly distributed on its surface. The correct plot for electrostatic potential due to this spherical shell is ANSWER: B ", options: ["(a) [Plot where V drops inside R]", "(b) [Plot where V is constant inside R and drops as 1/r outside]", "(c) [Plot where V increases inside R]", "(d) [Plot where V is zero inside R]"], answer: 1 },
+                { question: "Two points A and B are maintained at a potential of 7 V and -4 V respectively. The work done in moving 50 electrons from A to B is", options: ["$8.80\\times10^{-17}~J$", "$-8.80\\times10^{-17}~J$", "$4.40\\times10^{-17}~J$", "$5.80\\times10^{-17}~J$"], answer: 0 },
+                { question: "A parallel plate capacitor stores a charge Q at a voltage V. Suppose the area of the parallel plate capacitor and the distance between the plates are each doubled then which is the quantity that will change? The correct conclusion.", options: ["Q remains the same, C is doubled", "Q is doubled, C doubled", "C remains same, Q doubled", "Both Q and C remain same"], answer: 0 },
+                { question: "A parallel plate capacitor stores a charge Q at a voltage V. Suppose the area of the parallel plate capacitor and the distance between the plates are each doubled then which is the quantity that will change?", options: ["Capacitance", "Charge", "Voltage", "Energy density"], answer: 3 },
+                { question: "Three capacitors are connected in triangle as shown in the figure. The equivalent capacitance between the points A and C is ", options: ["$1\\mu F$", "$2\\mu F$", "$3\\mu F$", "$1/4\\mu F$"], answer: 1 }
+            ],
+            "2": [ // CURRENT ELECTRICITY
+                { question: "The following graph shows current versus voltage values of some unknown conductor. What is the resistance of this conductor? 
+
+[Image of an I-V graph for a conductor.]
+", options: ["2 ohm", "4 ohm", "8 ohm", "1 ohm"], answer: 1 },
+                { question: "A wire of resistance 2 ohms per meter is bent to form a circle of radius 1m. The equivalent resistance between its two diametrically opposite points, A and B as shown in the figure is ", options: ["$\\pi\\Omega$", "$(\\pi/2)\\Omega$", "$2\\pi\\Omega$", "$(\\pi/4)\\Omega$"], answer: 1 },
+                { question: "A toaster operating at 240 V has a resistance of $120 \\Omega$. The power is", options: ["400 W", "2 W", "480 W", "240 W"], answer: 2 },
+                { question: "A carbon resistor of $(47\\pm4.7)~k\\Omega$ to be marked with rings of different colours for its identification. The colour code sequence will be", options: ["Yellow - Green - Violet - Gold", "Yellow - Violet - Orange - Silver", "Violet - Yellow - Orange - Silver", "Green - Orange - Violet - Gold"], answer: 1 },
+                { question: "What is the value of resistance of the following resistor? ", options: ["$100~k\\Omega$", "$10~k\\Omega$", "$1~k\\Omega$", "$1000~k\\Omega$"], answer: 1 },
+                { question: "Two wires of A and B with circular cross section made up of the same material with equal lengths. Suppose $R_A=3R_B$ then what is the ratio of radius of wire A to that of B?", options: ["3", "$\\sqrt{3}$", "$1/\\sqrt{3}$", "$1/3$"], answer: 2 },
+                { question: "A wire connected to a power supply of 230 V has power dissipation $P_1$. Suppose the wire is cut into two equal pieces and connected parallel to the same power supply. In this case power dissipation is $P_2$. The ratio $P_1/P_2$ is", options: ["1", "2", "3", "4"], answer: 3 },
+                { question: "In India electricity is supplied for domestic use at 220 V. It is supplied at 110 V in USA. If the resistance of a 60W bulb for use in India is R, the resistance of a 60W bulb for use in USA will be", options: ["R", "2R", "R/4", "R/2"], answer: 2 },
+                { question: "In a large building, there are 15 bulbs of 40W, 5 bulbs of 100W, 5 fans of 80W and 1 heater of 1kW are connected. The voltage of electric mains is 220V. The minimum capacity of the main fuse of the building be", options: ["14 A", "8 A", "10 A", "12 A"], answer: 1 },
+                { question: "There is a current of 1.0 A in the circuit shown below. What is the resistance of P? ", options: ["$1~\\Omega$", "$2~\\Omega$", "$3~\\Omega$", "$4~\\Omega$"], answer: 1 },
+                { question: "What is the current out of the battery? ", options: ["1A", "2A", "3A", "4A"], answer: 2 },
+                { question: "The temperature coefficient of resistance of a wire is $0.00125$ per ${}^{\\circ}C$. At 300 K, its resistance is $1\\Omega$. The resistance of the wire will be $2\\Omega$ at", options: ["1154 K", "1100 K", "1400 K", "1127 K"], answer: 1 },
+                { question: "The internal resistance of a 2.1 V cell which gives a current of 0.2 A through a resistance of $10\\Omega$ is", options: ["$0.2\\Omega$", "$0.5\\Omega$", "$0.8\\Omega$", "$1.0\\Omega$"], answer: 2 },
+                { question: "A piece of copper and another of germanium are cooled from room temperature to 80 K. The resistance of", options: ["each of them increases", "each of them decreases", "copper increases and germanium decreases", "copper decreases and germanium increases"], answer: 3 },
+                { question: "In Joule's heating law, when $I$ and $t$ are constant, if the $H$ is taken along the y axis and $I^2$ along the x axis, the graph is", options: ["straight line", "parabola", "circle", "ellipse"], answer: 0 }
+            ],
+            "3": [ // MAGNETISM AND MAGNETIC EFFECTS OF ELECTRIC CURRENT
+                { question: "The magnetic field at the center O of the following current loop is ", options: ["$\\frac{\\mu_0 I}{4r}\\odot$", "$\\frac{\\mu_0 I}{4r}\\otimes$", "$\\frac{\\mu_0 I}{2r}\\odot$", "$\\frac{\\mu_0 I}{2r}\\otimes$"], answer: 1 },
+                { question: "An electron moves straight inside a charged parallel plate capacitor of uniform charge density $\\sigma$. The time taken by the electron to cross the parallel plate capacitor when the plates of the capacitor are kept under constant magnetic field of induction is", options: ["$e \\frac{\\epsilon_0 B}{\\sigma}$", "$\\epsilon_0 \\frac{IB}{e \\sigma}$", "$e \\frac{IB}{\\sigma I}$", "$\\epsilon_0 \\frac{IB}{\\sigma}$"], answer: 3 },
+                { question: "The force experienced by a particle having mass m and charge q accelerated through a potential difference V when it is kept under perpendicular magnetic field is ANSWER: C", options: ["$\\sqrt{\\frac{2q^3BV}{m}}$", "$\\sqrt{\\frac{q^3B^2V}{2m}}$", "$\\sqrt{\\frac{2q^3B^2V}{m}}$", "$\\sqrt{\\frac{2q^3BV}{m^3}}$"], answer: 2 },
+                { question: "A circular coil of radius 5 cm and 50 turns carries a current of 3 ampere. The magnetic dipole moment of the coil is", options: ["$1.0~amp-m^2$", "$1.2~amp-m^2$", "$0.5~amp-m^2$", "$0.8~amp-m^2$"], answer: 1 },
+                { question: "A thin insulated wire forms a plane spiral of $N=100$ tight turns carrying a current $I=8$ mA (milli ampere). The radii of inside and outside turns are $a=50$ mm and $b=100$ mm respectively. The magnetic induction at the center of the spiral is", options: ["$5~\\mu T$", "$7~\\mu T$", "$8~\\mu T$", "$10~\\mu T$"], answer: 1 },
+                { question: "Three wires of equal lengths are bent in the form of loops. One of the loops is circle, another is a semicircle and the third one is a square. They are placed in a uniform magnetic field and same electric current is passed through them. Which of the following loop configuration will experience greater torque?", options: ["circle", "semi-circle", "square", "all of them"], answer: 0 },
+                { question: "Two identical coils, each with N turns and radius R are placed coaxially at a distance R as shown in the figure. If I is the current passing through the loops in the same direction, then the magnetic field at a point P which is at exactly at R/2 distance between two coils is ", options: ["$\\frac{8N\\mu_0 I}{\\sqrt{5}R}$", "$\\frac{8N\\mu_0 I}{5^{3/2}R}$", "$\\frac{8N\\mu_0 I}{5R}$", "$\\frac{4N\\mu_0 I}{\\sqrt{5}R}$"], answer: 1 },
+                { question: "A wire of length $l$ carries a current $I$ along the Y direction and magnetic field is given by $\\vec{B}=\\frac{\\beta}{\\sqrt{3}}(\\hat{i}+\\hat{j}+\\hat{k})T$. The magnitude of Lorentz force acting on the wire is ANSWER: A", options: ["$\\sqrt{\\frac{2}{\\sqrt{3}}} \\beta I l$", "$\\sqrt{\\frac{1}{\\sqrt{3}}} \\beta I l$", "$\\sqrt{2}\\beta I l$", "$\\sqrt{\\frac{1}{2}}\\beta I l$"], answer: 0 },
+                { question: "A bar magnet of length $l$ and magnetic moment $M$ is bent in the form of an arc as shown in figure. The new magnetic dipole moment will be ", options: ["$M$", "$ (3/\\pi) M$", "$(2/\\pi) M$", "$(1/2)M$"], answer: 2 },
+                { question: "A non-conducting charged ring of charge q, mass m and radius r is rotated with constant angular speed $\\omega$. Find the ratio of its magnetic moment with angular momentum is", options: ["$q/m$", "$2q/m$", "$q/2m$", "$q/4m$"], answer: 2 },
+                { question: "The B-H curve for a ferromagnetic material is shown in the figure. The material is placed inside a long solenoid which contains 1000 turns/cm. The current that should be passed in the solenoid to demagnetize the ferromagnet completely is ", options: ["1.00 mA (milli ampere)", "1.25 mA", "1.50 mA", "1.75 mA"], answer: 2 },
+                { question: "Two short bar magnets have magnetic moments $1.20~Am^2$ and $1.00~Am^2$ respectively. They are kept on a horizontal table parallel to each other with their north poles pointing towards the south. They have a common magnetic equator and are separated by a distance of 20.0 cm. The value of the resultant horizontal magnetic induction at the mid-point O of the line joining their centers is (Horizontal components of Earth's magnetic induction is $3.6\\times10^{-5}~Wb~m^{-2}$)", options: ["$3.60\\times10^{-5}~Wb~m^{-2}$", "$3.5\\times10^{-5}~Wb~m^{-2}$", "$2.56\\times10^{-4}~Wb~m^{-2}$", "$2.2\\times10^{-4}~Wb~m^{-2}$"], answer: 2 },
+                { question: "The vertical component of Earth's magnetic field at a place is equal to the horizontal component. What is the value of angle of dip at this place?", options: ["$30^{\\circ}$", "$45^{\\circ}$", "$60^{\\circ}$", "$90^{\\circ}$"], answer: 1 },
+                { question: "A flat dielectric disc of radius R carries an excess charge on its surface. The surface charge density is $\\sigma$. The disc rotates about an axis perpendicular to its plane passing through the center with angular velocity $\\omega$. Find the magnitude of the torque on the disc if it is placed in a uniform magnetic field whose strength is B which is directed perpendicular to the axis of rotation ANSWER: D Physics", options: ["$(\\pi/4) \\sigma \\omega B R^3$", "$ (1/4) \\sigma \\omega \\pi B R^2$", "$ (1/4) \\sigma \\omega \\pi B R^3$", "$ (1/4) \\sigma \\omega \\pi B R^4$"], answer: 3 },
+                { question: "A simple pendulum with charged bob is oscillating with time period T and let $\\theta$ be the angular displacement. If the uniform magnetic field is switched ON in a direction perpendicular to the plane of oscillation then", options: ["time period will decrease but $\\theta$ will remain constant", "time period remain constant but $\\theta$ will decrease", "both T and $\\theta$ will remain the same", "both T and $\\theta$ will decrease"], answer: 2 }
+            ],
+            "4": [ // ELECTROMAGNETIC INDUCTION AND ALTERNATING CURRENT
+                { question: "An electron moves on a straight line path XY as shown in the figure. The coil abcd is adjacent to the path of the electron. What will be the direction of current, if any, induced in the coil? ", options: ["The current will reverse its direction as the electron goes past the coil", "No current will be induced", "abcd", "adcb"], answer: 0 },
+                { question: "A thin semi-circular conducting ring (PQR) of radius $r$ is falling with its plane vertical in a horizontal magnetic field B, as shown in the figure. The potential difference developed across the ring when its speed v, is ", options: ["Zero", "$Bvr^2/2$ and P is at higher potential", "$\\pi rBv$ and R is at higher potential", "$2rBv$ and R is at higher potential"], answer: 3 },
+                { question: "The flux linked with a coil at any instant t is given by $\\phi_B = 10t^2 - 50t + 250$. The induced emf at $t=3s$ is", options: ["-190 V", "-10 V", "10 V", "190 V"], answer: 1 },
+                { question: "When the current changes from +2A to -2A in 0.05 s, an emf of 8 V is induced in a coil. The coefficient of self-induction of the coil is", options: ["0.2 H", "0.4 H", "0.8 H", "0.1 H"], answer: 0 },
+                { question: "The current $i$ flowing in a coil varies with time as shown in the figure. The variation of induced emf with time would be ANSWER: A ", options: ["(a) [Plot of emf vs time, showing constant negative emf, then zero, then constant positive emf]", "(b) [Plot with fluctuating emf]", "(c) [Plot with sine wave emf]", "(d) [Plot with parabolic emf]"], answer: 0 },
+                { question: "A circular coil with a cross-sectional area of $4~cm^2$ has 10 turns. It is placed at the centre of a long solenoid that has $15~turns/cm$ and a cross-sectional area of $10~cm^2$. The axis of the coil coincides with the axis of the solenoid. What is their mutual inductance?", options: ["$7.54~\\mu H$", "$8.54~\\mu H$", "$9.54~\\mu H$", "$10.54~\\mu H$"], answer: 0 },
+                { question: "In a transformer, the number of turns in the primary and the secondary are 410 and 1230 respectively. If the current in primary is 6A, then that in the secondary coil is", options: ["2 A", "18 A", "12 A", "1 A"], answer: 0 },
+                { question: "A step-down transformer reduces the supply voltage from 220 V to 11 V and increase the current from 6 A to 100 A. Then its efficiency is", options: ["1.2", "0.83", "0.12", "0.9"], answer: 2 },
+                { question: "In an electrical circuit, R, L, C and AC voltage source are all connected in series. When L is removed from the circuit, the phase difference between the voltage and current in the circuit is $\\pi/3$. Instead, if C is removed from the circuit, the phase difference is again $\\pi/3$. The power factor of the circuit is", options: ["$1/2$", "$1/\\sqrt{2}$", "1", "$\\sqrt{3}/2$"], answer: 2 },
+                { question: "In a series RL circuit, the resistance and inductive reactance are the same. Then the phase difference between the voltage and current in the circuit is", options: ["$\\pi/4$", "$\\pi/2$", "$\\pi/6$", "zero"], answer: 0 },
+                { question: "In a series resonant RLC circuit, the voltage across $100\\Omega$ resistor is 40 V. The resonant frequency $\\omega$ is $250~rad/s$. If the value of C is $4~\\mu F$, then the voltage across L is", options: ["600 V", "4000 V", "400 V", "1 V"], answer: 2 },
+                { question: "An inductor $20~mH$, a capacitor $50~\\mu F$ and a resistor $40\\Omega$ are connected in series across a source of emf $v=10 \\sin 340 t$. The power loss in AC circuit is", options: ["0.76 W", "0.89 W", "0.46 W", "0.67 W"], answer: 0 },
+                { question: "The instantaneous values of alternating current and voltage in a circuit are $i=\\frac{1}{\\sqrt{2}}\\sin(100\\pi t)$ A and $v=\\frac{1}{\\sqrt{2}}\\sin[100\\pi t+\\frac{\\pi}{3}]$ V. The average power in watts consumed in the circuit is", options: ["$1/4$", "$\\sqrt{3}/4$", "$1/2$", "$1/8$"], answer: 3 },
+                { question: "In an oscillating LC circuit, the maximum charge on the capacitor is Q. The charge on the capacitor when the energy is stored equally between the electric and magnetic fields is", options: ["$Q/2$", "$Q/\\sqrt{3}$", "$Q/\\sqrt{2}$", "Q"], answer: 2 },
+                { question: "$(20/\\pi^2)~H$ inductor is connected to a capacitor of capacitance C. The value of C in order to impart maximum power at 50 Hz is", options: ["$50~\\mu F$", "$0.5~\\mu F$", "$500~\\mu F$", "$5~\\mu F$"], answer: 0 }
+            ],
+            "5": [ // ELECTROMAGNETIC WAVES
+                { question: "The dimension of $1/\\mu_0 \\epsilon_0$ is", options: ["$[L T^{-1}]$", "$[L^2 T^{-2}]$", "$[L^{-1} T]$", "$[L^{-2} T^2]$"], answer: 1 },
+                { question: "If the amplitude of the magnetic field is $3\\times10^{-6}T$, then amplitude of the electric field for a electromagnetic waves is", options: ["$100~V~m^{-1}$", "$300~V~m^{-1}$", "$600~V~m^{-1}$", "$900~V~m^{-1}$"], answer: 3 },
+                { question: "Which of the following electromagnetic radiation is used for viewing objects through fog", options: ["microwave", "gamma rays", "X-rays", "infrared"], answer: 3 },
+                { question: "Which of the following are false for electromagnetic waves", options: ["transverse", "mechanical waves", "longitudinal", "produced by accelerating charges"], answer: 1 },
+                { question: "Consider an oscillator which has a charged particle and oscillates about its mean position with a frequency of 300 MHz. The wavelength of electromagnetic waves produced by this oscillator is", options: ["1 m", "10 m", "100 m", "1000 m"], answer: 0 },
+                { question: "The electric and the magnetic field, associated with an electromagnetic wave, propagating along X axis can be represented by ANSWER: B", options: ["$\\vec{E}=E_0 \\hat{j}$ and $\\vec{B}=B_0 \\hat{k}$", "$\\vec{E}=E_0 \\hat{k}$ and $\\vec{B}=B_0 \\hat{j}$", "$\\vec{E}=E_0 \\hat{j}$ and $\\vec{B}=B_0 \\hat{i}$", "$\\vec{E}=E_0 \\hat{j}$ and $\\vec{B}=B_0 \\hat{I}$"], answer: 0 },
+                { question: "In an electromagnetic wave in free space the rms value of the electric field is $3\\ V~m^{-1}$. The peak value of the magnetic field is ANSWER: A", options: ["$1.414\\times10^{-8}T$", "$1.0\\times10^{-8}~T$", "$2.828\\times10^{-8}T$", "$2.0\\times10^{-8}T$"], answer: 0 },
+                { question: "During the propagation of electromagnetic waves in a medium:", options: ["electric energy density is double of the magnetic energy density", "electric energy density is half of the magnetic energy density", "electric energy density is equal to the magnetic energy density", "both electric and magnetic energy densities are zero"], answer: 2 },
+                { question: "If the magnetic monopole exists, then which of the Maxwell's equation to be modified?.", options: ["$\\oint \\vec{E}\\cdot d\\vec{A}=\\frac{Q_{enclosed}}{\\epsilon_0}$", "$\\oint \\vec{B}\\cdot d\\vec{A}=0$", "$\\oint \\vec{B}\\cdot d\\vec{l}=\\mu_0 I_{enclosed}+\\mu_0\\epsilon_0\\frac{d}{dt}\\int \\vec{E}\\cdot d\\vec{A}$", "$\\oint \\vec{E}\\cdot d\\vec{l}=-\\frac{d}{dt}\\Phi_B$"], answer: 1 },
+                { question: "A radiation of energy E falls normally on a perfectly reflecting surface. The momentum transferred to the surface is", options: ["$E/c$", "$2(E/c)$", "$Ec$", "$E/c^2$"], answer: 1 },
+                { question: "Which of the following is an electromagnetic wave?", options: ["$\\alpha-rays$", "$\\beta-rays$", "$\\gamma-rays$", "all of them"], answer: 2 },
+                { question: "Which one of them is used to produce a propagating electromagnetic wave?.", options: ["an accelerating charge", "a charge moving at constant velocity", "a stationary charge", "an uncharged particle"], answer: 0 },
+                { question: "Let $E=E_0 \\sin[10^6 x-\\omega t]$ be the electric field of plane electromagnetic wave, the value of $\\omega$ is", options: ["$0.3\\times10^{-14}~rad~s^{-1}$", "$3\\times10^{-14}~rad~s^{-1}$", "$0.3\\times10^{14}~rad~s^{-1}$", "$3\\times10^{14}~rad~s^{-1}$"], answer: 3 },
+                { question: "Which of the following is NOT true for electromagnetic waves?.", options: ["it transport energy", "it transport momentum", "it transport angular momentum", "in vacuum, it travels with different speeds which depend on their frequency"], answer: 3 },
+                { question: "The electric and magnetic fields of an electromagnetic wave are", options: ["in phase and perpendicular to each other", "out of phase and not perpendicular to each other", "in phase and not perpendicular to each other", "out of phase and perpendicular to each other"], answer: 0 }
+            ],
+            "6": [ // OPTICS
+                { question: "The speed of light in an isotropic medium depends on,", options: ["its intensity", "its wavelength w.r.to medium", "the nature of propagation", "the motion of the source"], answer: 1 },
+                { question: "A rod of length 10 cm lies along the principal axis of a concave mirror of focal length 10 cm in such a way that its end closer to the pole is 20 cm away from the mirror. The length of the image is,", options: ["2.5 cm", "5 cm", "10 cm", "15 cm"], answer: 1 },
+                { question: "An object is placed in front of a convex mirror of focal length of f and the maximum and minimum distance of an object from the mirror such that the image formed is real and magnified.", options: ["2f and $\\infty$", "c and $\\infty$", "f and 0", "None of these"], answer: 3 },
+                { question: "For light incident from air onto a slab of refractive index 2. Maximum possible angle of refraction is,", options: ["$30^{\\circ}$", "$45^{\\circ}$", "$60^{\\circ}$", "$90^{\\circ}$"], answer: 0 },
+                { question: "If the velocity and wavelength of light in air is $V_a$ and $\\lambda_a$ and that in water is $V_w$ and $\\lambda_w$, then the refractive index of water is,", options: ["$V_w/V_a$", "$V_a/V_w$", "$\\lambda_w/\\lambda_a$", "$V_a \\lambda_a / V_w \\lambda_w$"], answer: 1 },
+                { question: "Stars twinkle due to,", options: ["reflection", "total internal reflection", "refraction", "polarisation"], answer: 2 },
+                { question: "When a biconvex lens of glass having refractive index 1.47 is dipped in a liquid, it acts as a plane sheet of glass. This implies that the liquid must have refractive index,", options: ["less than one", "less than that of glass", "greater than that of glass", "equal to that of glass"], answer: 3 },
+                { question: "The radius of curvature of curved surface at a thin plano-convex lens is 10 cm and the refractive index is 1.5. If the plane surface is silvered, then the focal length will be,", options: ["5 cm", "10 cm", "15 cm", "20 cm"], answer: 0 },
+                { question: "An air bubble in glass slab of refractive index 1.5 (near normal incidence) is 5 cm deep when viewed from one surface and 3 cm deep when viewed from the opposite face. The thickness of the slab is,", options: ["8 cm", "10 cm", "12 cm", "16 cm"], answer: 2 },
+                { question: "A ray of light travelling in a transparent medium of refractive index $n$ falls, on a surface separating the medium from air at an angle of incidents of $45^{\\circ}$. The ray can undergo total internal reflection for the following n,", options: ["$n=1.25$", "$n=1.33$", "$n=1.4$", "$n=1.5$"], answer: 3 },
+                { question: "A plane glass is placed over a various coloured letters (violet, green, yellow, red) The letter which appears to be raised more is,", options: ["red", "yellow", "green", "violet"], answer: 3 },
+                { question: "Two point white dots are 1 mm apart on a black paper. They are viewed by eye of pupil diameter 3 mm approximately. The maximum distance at which these dots can be resolved by the eye is, [take wavelength of light, $\\lambda=500~nm$]", options: ["1 m", "5 m", "3 m", "6 m"], answer: 1 },
+                { question: "In a Young's double-slit experiment, the slit separation is doubled. To maintain the same fringe spacing on the screen, the screen-to-slit distance D must be changed to,", options: ["2D", "$D/2$", "$\\sqrt{2D}$", "$D/\\sqrt{2}$"], answer: 0 },
+                { question: "Two coherent monochromatic light beams of intensities I and 4I are superposed. The maximum and minimum possible intensities in the resulting beam are", options: ["5I and I", "5I and 3I", "9I and I", "9I and 3I"], answer: 2 },
+                { question: "When light is incident on a soap film of thickness $5\\times10^{-5}~cm$, the wavelength of light reflected maximum in the visible region is $5320~\\AA$. Refractive index of the film will be,", options: ["1.22", "1.33", "1.51", "1.83"], answer: 1 },
+                { question: "First diffraction minimum due to a single slit of width $1.0\\times10^{-5}~cm$ is at $30^{\\circ}$. Then wavelength of light used is,", options: ["$400~\\AA$", "$500~\\AA$", "$600~\\AA$", "$700~\\AA$"], answer: 1 },
+                { question: "A ray of light strikes a glass plate at an angle $60^{\\circ}$. If the reflected and refracted rays are perpendicular to each other, the refractive index of the glass is,", options: ["$\\sqrt{3}$", "$\\sqrt{3}/2$", "$\\sqrt{3}^2$", "2"], answer: 0 },
+                { question: "One of the of Young's double slits is covered with a glass plate as shown in figure. The position of central maximum will, ", options: ["get shifted downwards", "get shifted upwards", "will remain the same", "data insufficient to conclude"], answer: 1 },
+                { question: "Light transmitted by Nicol prism is,", options: ["partially polarized", "unpolarized", "plane polarized", "elliptically polarised"], answer: 2 },
+                { question: "The transverse nature of light is shown in,", options: ["interference", "diffraction", "scattering", "polarisation"], answer: 3 }
+            ],
+            "7": [ // DUAL NATURE OF RADIATION AND MATTER
+                { question: "The wavelength $\\lambda_e$ of an electron and $\\lambda_p$ of a photon of same energy E are related by", options: ["$\\lambda_p\\propto\\lambda_e$", "$\\lambda_p\\propto\\sqrt{\\lambda_e}$", "$\\lambda_p\\propto1/\\sqrt{\\lambda_e}$", "$\\lambda_p\\propto\\lambda_e^2$"], answer: 3 },
+                { question: "In an electron microscope, the electrons are accelerated by a voltage of 14 kV. If the voltage is changed to 224 kV, then the de Broglie wavelength associated with the electrons would", options: ["increase by 2 times", "decrease by 2 times", "decrease by 4 times", "increase by 4 times"], answer: 2 },
+                { question: "A particle of mass $3\\times10^{-6}g$ has the same wavelength as an electron moving with a velocity $6\\times10^6~m~s^{-1}$. The velocity of the particle is", options: ["$1.82\\times10^{18}~m~s^{-1}$", "$9\\times10^{-2}~m~s^{-1}$", "$3\\times10^{-31}~m~s^{-1}$", "$1.82\\times10^{-15}~m~s^{-1}$"], answer: 3 },
+                { question: "When a metallic surface is illuminated with radiation of wavelength $\\lambda$, the stopping potential is V. If the same surface is illuminated with radiation of wavelength $2\\lambda$, the stopping potential is $V/4$. The threshold wavelength for the metallic surface is", options: ["$4\\lambda$", "$5\\lambda$", "$(5/2)\\lambda$", "$3\\lambda$"], answer: 3 },
+                { question: "If a light of wavelength $330~nm$ is incident on a metal with work function $3.55~eV$, the electrons are emitted. Then the wavelength of the emitted electron is (Take $h=6.6\\times10^{-34}Js$)", options: ["$<2.75\\times10^{-9}m$", "$\\ge2.75\\times10^{-9}m$", "$\\le2.75\\times10^{-12}m$", "$<2.5\\times10^{-10}m$"], answer: 0 },
+                { question: "A photoelectric surface is illuminated successively by monochromatic light of wavelength $\\lambda$ and $\\lambda/2$. If the maximum kinetic energy of the emitted photoelectrons in the second case is 3 times that in the first case, the work function at the surface of material is", options: ["$hc / \\lambda$", "$2hc / \\lambda$", "$hc / 3\\lambda$", "$hc / 2\\lambda$"], answer: 3 },
+                { question: "In photoelectric emission, a radiation whose frequency is 4 times threshold frequency of a certain metal is incident on the metal. Then the maximum possible velocity of the emitted electron will be", options: ["$\\sqrt{\\frac{hv_0}{m}}$", "$\\sqrt{\\frac{6hv_0}{m}}$", "$2\\sqrt{\\frac{hv_0}{m}}$", "$\\sqrt{\\frac{hv_0}{2m}}$"], answer: 2 },
+                { question: "Two radiations with photon energies 0.9 eV and 3.3 eV respectively are falling on a metallic surface successively. If the work function of the metal is 0.6 eV, then the ratio of maximum speeds of emitted electrons will be", options: ["1:4", "1:3", "1:1", "1:9"], answer: 1 },
+                { question: "A light source of wavelength $520~nm$ emits $1.04\\times10^{15}$ photons per second while the second source of $460~nm$ produces $1.38\\times10^{15}$ photons per second. Then the ratio of power of second source to that of first source is", options: ["1.00", "1.02", "1.5", "0.98"], answer: 0 },
+                { question: "The mean wavelength of light from sun is taken to be $550~nm$ and its mean power is $3.8\\times10^{26}~W$. The number of photons received by the human eye per second on the average from sunlight is of the order of", options: ["$10^{45}$", "$10^{42}$", "$10^{54}$", "$10^{51}$"], answer: 4 },
+                { question: "The threshold wavelength for a metal surface whose photoelectric work function is $3.313~eV$ is", options: ["$4125~\\AA$", "$3750~\\AA$", "$6000~\\AA$", "$2062.5~\\AA$"], answer: 0 },
+                { question: "A light of wavelength $500~nm$ is incident on a sensitive plate of photoelectric work function $1.235~eV$. The kinetic energy of the photo electrons emitted is be (Take $h=6.6\\times10^{-34}Js$)", options: ["0.58 eV", "2.48 eV", "1.24 eV", "1.16 eV"], answer: 1 },
+                { question: "Photons of wavelength $\\lambda$ are incident on a metal. The most energetic electrons ejected from the metal are bent into a circular arc of radius R by a perpendicular magnetic field having magnitude B. The work function of the metal is ANSWER:", options: ["$\\frac{hc}{\\lambda}-m_e+\\frac{e^2 B^2 R^2}{2m_e}$", "$\\frac{hc}{\\lambda}+2m_e|\\frac{eBR}{2m_e}|^2$", "$\\frac{hc}{\\lambda}-m_e c^2-\\frac{e^2 B^2 R^2}{2m_e}$", "$\\frac{hc}{\\lambda}-2m_e|\\frac{eBR}{2m_e}|^2$"], answer: 3 },
+                { question: "The work functions for metals A, B and C are 1.92 eV, 2.0 eV and 5.0 eV respectively. The metals which will emit photoelectrons for a radiation of wavelength $4100\\AA$ is/are", options: ["A only", "both A and B", "all these metals", "none"], answer: 1 },
+                { question: "Emission of electrons by the absorption of heat energy is called.........emission.", options: ["photoelectric", "field", "thermionic", "secondary"], answer: 2 }
+            ],
+            "8": [ // ATOMIC AND NUCLEAR PHYSICS
+                { question: "Suppose an alpha particle accelerated by a potential of V volt is allowed to collide with a nucleus whose atomic number is Z, then the distance of closest approach of alpha particle to the nucleus is", options: ["$14.4~\\frac{Z}{V}~\\AA$", "$14.4~\\frac{V}{Z}~\\AA$", "$1.44~\\frac{Z}{V}~\\AA$", "$1.44~\\frac{V}{Z}~\\AA$"], answer: 0 },
+                { question: "In a hydrogen atom, the electron revolving in the fourth orbit, has a angular momentum equal to", options: ["$h$", "$h/\\pi$", "$4h/\\pi$", "$2h/\\pi$"], answer: 3 },
+                { question: "Atomic number of H - like atom with ionization potential 122.4 V for $n=1$ is", options: ["1", "2", "3", "4"], answer: 2 },
+                { question: "The ratio between the first three orbits of hydrogen atom is", options: ["1:2:3", "2:4:6", "1:4:9", "1:3:5"], answer: 2 },
+                { question: "The charge of cathode rays is", options: ["positive", "negative", "neutral", "not defined"], answer: 1 },
+                { question: "In J.J Thomson $e/m$ experiment, a beam of electrons is replaced by that of muons (particle with same charge as that of electrons but mass 208 times that of electrons). No deflection condition is achieved only if", options: ["B is increased by 208 times", "B is decreased by 208 times", "B is increased by 14.4 times", "B is decreased by 14.4 times"], answer: 2 },
+                { question: "The ratio of the wavelengths for the transition from $n=2$ to $n=1$ in $Li^{++}$, $He^+$ and $H$ is", options: ["1: 2: 3", "1: 4: 9", "3: 2: 1", "4: 9: 36"], answer: 3 },
+                { question: "The electric potential between a proton and an electron is given by $V=V_0 \\ln(\\frac{r}{r_0})$, where $r_0$ is a constant. Assume that Bohr atom model is applicable to potential, then variation of radius of $n^{th}$ orbit $r_n$ with principal quantum number $n$ is", options: ["$r_n\\propto\\frac{1}{n}$", "$r_n\\propto n$", "$r_n\\propto\\frac{1}{n^2}$", "$r_n\\propto n^2$"], answer: 1 },
+                { question: "If the nuclear radius of $^{27}Al$ is 3.6 fermi, the approximate nucleur radius of $^{64}Cu$ is", options: ["2.4 fermi", "1.2 fermi", "4.8 fermi", "3.6 fermi"], answer: 2 },
+                { question: "The nucleus is approximately spherical in shape. Then the surface area of nucleus having mass number A varies as", options: ["$A^{2/3}$", "$A^{4/3}$", "$A^{1/3}$", "$A^{5/3}$"], answer: 0 },
+                { question: "The mass of a $^{7}Li_3$ nucleus is $0.042~u$ less than the sum of the masses of all its nucleons. The binding energy per nucleon of $^{7}Li_3$ nucleus is nearly", options: ["46 MeV", "5.6 MeV", "3.9 MeV", "23 MeV"], answer: 1 },
+                { question: "$M_p$ denotes the mass of the proton and $M_n$ denotes mass of a neutron. A given nucleus of binding energy B, contains Z protons and N neutrons. The mass $M(N,Z)$ of the nucleus is given by(where c is the speed of light) ANSWER: C", options: ["$M(N,Z)=NM_n+ZM_p-Bc^2$", "$M(N,Z)=NM_n+ZM_p+Bc^2$", "$M(N,Z)=NM_n+ZM_p-B/c^2$", "$M(N,Z)=NM_n+ZM_p+B/c^2$"], answer: 2 },
+                { question: "A radioactive nucleus (initial mass number A and atomic number Z) emits $2\\alpha$ and 2 positrons. The ratio of number of neutrons to that of proton in the final nucleus will be", options: ["$\\frac{A-Z-4}{Z-2}$", "$\\frac{A-Z-2}{Z-6}$", "$\\frac{A-Z-4}{Z-6}$", "$\\frac{A-Z-12}{Z-4}$"], answer: 2 },
+                { question: "The half-life period of a radioactive element A is same as the mean life time of another radioactive element B. Initially both have the same number of atoms. Then", options: ["A and B have the same decay rate initially", "A and B decay at the same rate always", "B will decay at faster rate than A", "A will decay at faster rate than B."], answer: 2 },
+                { question: "A system consists of $N_0$ nucleus at $t=0$. The number of nuclei remaining after half of a half-life (that is, at time $t=1/2~T_{1/2})$", options: ["$N_0/2$", "$N_0/\\sqrt{2}$", "$N_0/4$", "$N_0/8$"], answer: 1 }
+            ],
+            "9": [ // SEMICONDUCTOR ELECTRONICS
+                { question: "The barrier potential of a silicon diode is approximately,", options: ["0.7 V", "0.3 V", "2.0 V", "2.2 V"], answer: 0 },
+                { question: "Doping a semiconductor results in", options: ["The decrease in mobile charge carriers", "The change in chemical properties", "The change in the crystal structure", "The breaking of the covalent bond"], answer: 3 },
+                { question: "A forward biased diode is treated as", options: ["An open switch with infinite resistance", "A closed switch with a voltage drop of 0V", "A closed switch in series with a battery voltage of 0.7V", "A closed switch in series with a small resistance and a battery."], answer: 3 },
+                { question: "If a half-wave rectified voltage is fed to a load resistor, which part of a cycle the load current will flow?", options: ["$0^{\\circ}-90^{\\circ}$", "$90^{\\circ}-180^{\\circ}$", "$0^{\\circ}-180^{\\circ}$", "$0^{\\circ}-360^{\\circ}$"], answer: 2 },
+                { question: "The primary use of a zener diode is", options: ["Rectifier", "Amplifier", "Oscillator", "Voltage regulator"], answer: 3 },
+                { question: "The principle in which a solar cell operates", options: ["Diffusion", "Recombination", "Photovoltaic action", "Carrier flow"], answer: 2 },
+                { question: "The light emitted in an LED is due to", options: ["Recombination of charge carriers", "Reflection of light due to lens action", "Amplification of light falling at the junction", "Large current capacity."], answer: 0 },
+                { question: "When a transistor is fully switched on, it is said to be", options: ["Shorted", "Saturated", "Cut-off", "Open"], answer: 1 },
+                { question: "The specific characteristic of a common emitter amplifier is", options: ["High input resistance", "Low power gain", "Signal phase reversal", "Low current gain"], answer: 2 },
+                { question: "To obtain sustained oscillation in an oscillator,", options: ["Feedback should be positive", "Feedback factor must be unity", "Phase shift must be 0 or $2\\pi$", "All the above"], answer: 3 },
+                { question: "If the input to the NOT gate is $A=1011$, its output is", options: ["0100", "1000", "1100", "0011"], answer: 0 },
+                { question: "The electrical series circuit in digital form is", options: ["AND", "OR", "NOR", "NAND"], answer: 0 },
+                { question: "Which one of the following represents forward bias diode? ", options: ["(a) 
+
+[Image of a diode circuit]
+", "(b) ", "(c) ", "(d) "], answer: 0 },
+                { question: "The given electrical network is equivalent to ", options: ["AND gate", "OR gate", "NOR gate", "NOT gate"], answer: 1 },
+                { question: "The output of the following circuit is 1 when the input ABC is ", options: ["101", "100", "110", "010"], answer: 2 }
+            ],
+            "10": [ // COMMUNICATION SYSTEMS
+                { question: "The output transducer of the communication system converts the radio signal into", options: ["Sound", "Mechanical energy", "Kinetic energy", "None of the above"], answer: 0 },
+                { question: "The signal is affected by noise in a communication system", options: ["At the transmitter", "At the modulator", "In the channel", "At the receiver"], answer: 2 },
+                { question: "The variation of frequency of carrier wave with respect to the amplitude of the modulating signal is called", options: ["Amplitude modulation", "Frequency modulation", "Phase modulation", "Pulse width modulation"], answer: 1 },
+                { question: "The internationally accepted frequency deviation for the purpose of FM broadcasts.", options: ["75 kHz", "68 kHz", "80 kHz", "70 kHz"], answer: 0 },
+                { question: "The frequency range of 3 MHz to 30 MHz is used for", options: ["Ground wave propagation", "Space wave propagation", "Sky wave propagation", "Satellite communication"], answer: 2 }
+            ],
+            "11": [ // RECENT DEVELOPMENTS IN PHYSICS
+                { question: "The particle size of ZnO material is 30 nm. Based on the dimension it is classified as", options: ["Bulk material", "Nanomaterial", "Soft material", "Magnetic material"], answer: 1 },
+                { question: "Which one of the following is the natural nanomaterial.", options: ["Peacock feather", "Peacock beak", "Grain of sand", "Skin of the Whale"], answer: 0 },
+                { question: "The blue print for making ultra durable synthetic material is mimicked from", options: ["Lotus leaf", "Morpho butterfly", "Parrot fish", "Peacock feather"], answer: 2 },
+                { question: "The method of making nanomaterial by assembling the atoms is called", options: ["Top down approach", "Bottom up approach", "Cross down approach", "Diagonal approach"], answer: 1 },
+                { question: "\"Sky wax\" is an application of nano product in the field of", options: ["Medicine", "Textile", "Sports", "Automotive industry"], answer: 2 },
+                { question: "The materials used in Robotics are", options: ["Aluminium and silver", "Silver and gold", "Copper and gold", "Steel and aluminum"], answer: 3 },
+                { question: "The alloys used for muscle wires in Robots are", options: ["Shape memory alloys", "Gold copper alloys", "Gold silver alloys", "Two dimensional alloys"], answer: 0 },
+                { question: "The technology used for stopping the brain from processing pain is", options: ["Precision medicine", "Wireless brain sensor", "Virtual reality", "Radiology"], answer: 1 },
+                { question: "The particle which gives mass to protons and neutrons are", options: ["Higgs particle", "Einstein particle", "Nanoparticle", "Bulk particle"], answer: 0 },
+                { question: "The gravitational waves were theoretically proposed by", options: ["Conrad Rontgen", "Marie Curie", "Albert Einstein", "Edward Purcell"], answer: 2 }
+            ]
+        };
+
+        // DOM Elements
+        const formContainer = document.getElementById('form-container');
+        const chapterSelectionContainer = document.getElementById('chapter-selection-container');
+        const quizContainer = document.getElementById('quiz-container');
+        const resultContainer = document.getElementById('result-container');
+        const startBtn = document.getElementById('start-quiz');
+        const showQuizBtn = document.getElementById('show-quiz-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const restartBtn = document.getElementById('restart-btn');
+        const whatsappShareBtn = document.getElementById('whatsapp-share-btn');
+        const studentNameInput = document.getElementById('student-name');
+        const schoolNameInput = document.getElementById('school-name');
+        const classSectionSelect = document.getElementById('class-section');
+        const chaptersListEl = document.getElementById('chapters-list');
+        const currentQuestionEl = document.getElementById('current-question');
+        const totalQuestionsEl = document.getElementById('total-questions');
+        const questionTextEl = document.getElementById('question-text');
+        const optionsContainerEl = document.getElementById('options-container');
+        const feedbackEl = document.getElementById('feedback');
+        const resultNameEl = document.getElementById('result-name');
+        const resultSchoolEl = document.getElementById('result-school');
+        const resultClassEl = document.getElementById('result-class');
+        const resultChapterEl = document.getElementById('result-chapter');
+        const resultScoreEl = document.getElementById('result-score');
+        const resultCorrectEl = document.getElementById('result-correct');
+        const resultWrongEl = document.getElementById('result-wrong');
+        const resultSkippedEl = document.getElementById('result-skipped');
+
+        // Quiz state
+        let questions = [];
+        let currentQuestionIndex = 0;
+        let userAnswers = [];
+        let correctAnswers = 0;
+        let wrongAnswers = 0;
+        let skippedQuestions = 0;
+        let studentInfo = {};
+
+        // Define chapterNames for Physics (Moved outside for accessibility)
+        const chapterNames = {
+            "1": "Chapter 1: ELECTROSTATICS",
+            "2": "Chapter 2: CURRENT ELECTRICITY",
+            "3": "Chapter 3: MAGNETISM AND MAGNETIC EFFECTS OF ELECTRIC CURRENT",
+            "4": "Chapter 4: ELECTROMAGNETIC INDUCTION AND ALTERNATING CURRENT",
+            "5": "Chapter 5: ELECTROMAGNETIC WAVES",
+            "6": "Chapter 6: OPTICS",
+            "7": "Chapter 7: DUAL NATURE OF RADIATION AND MATTER",
+            "8": "Chapter 8: ATOMIC AND NUCLEAR PHYSICS",
+            "9": "Chapter 9: SEMICONDUCTOR ELECTRONICS",
+            "10": "Chapter 10: COMMUNICATION SYSTEMS",
+            "11": "Chapter 11: RECENT DEVELOPMENTS IN PHYSICS"
+        };
+
+
+        // Event Listeners
+        startBtn.addEventListener('click', startQuiz);
+        showQuizBtn.addEventListener('click', showQuiz);
+        nextBtn.addEventListener('click', nextQuestion);
+        restartBtn.addEventListener('click', restartQuiz);
+        whatsappShareBtn.addEventListener('click', shareViaWhatsApp);
+
+        function startQuiz() {
+            if (!studentNameInput.value.trim() || 
+                !schoolNameInput.value.trim() || 
+                !classSectionSelect.value) {
+                alert('Please fill in all fields');
+                return;
+            }
+            studentInfo = {
+                name: studentNameInput.value.trim(),
+                school: schoolNameInput.value.trim(),
+                class: classSectionSelect.value
+            };
+            
+            chaptersListEl.innerHTML = '';
+            for (const key in mcqData) {
+                const label = document.createElement('label');
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.value = key;
+                const span = document.createElement('span');
+                span.textContent = chapterNames[key] || `Chapter ${key}`;
+                label.appendChild(checkbox);
+                label.appendChild(span);
+                chaptersListEl.appendChild(label);
+            }
+            formContainer.classList.add('hidden');
+            chapterSelectionContainer.classList.remove('hidden');
+        }
+
+        function showQuiz() {
+            const selectedCheckboxes = chaptersListEl.querySelectorAll('input[type="checkbox"]:checked');
+            if (selectedCheckboxes.length === 0) {
+                alert('Please select at least one chapter.');
+                return;
+            }
+            questions = [];
+            selectedCheckboxes.forEach(cb => {
+                questions = questions.concat(mcqData[cb.value]);
+            });
+            
+            if (questions.length === 0) {
+                alert('No questions found for selected chapters.');
+                return;
+            }
+            
+            const selectedChapters = Array.from(selectedCheckboxes).map(cb =>
+                chapterNames[cb.value]
+            );
+            studentInfo.chapter = selectedChapters.join(', ');
+            
+            // Reset quiz state
+            currentQuestionIndex = 0;
+            userAnswers = new Array(questions.length).fill(null);
+            correctAnswers = 0;
+            wrongAnswers = 0;
+            skippedQuestions = 0;
+            
+            totalQuestionsEl.textContent = questions.length;
+            showQuestion();
+            
+            chapterSelectionContainer.classList.add('hidden');
+            quizContainer.classList.remove('hidden');
+        }
+
+        function showQuestion() {
+            const question = questions[currentQuestionIndex];
+            currentQuestionEl.textContent = currentQuestionIndex + 1;
+            
+            const imageMatch = question.question.match(/\/);
+            let questionText = question.question;
+            let imagePlaceholder = '';
+
+            if (imageMatch) {
+                // Remove the image tag from the question text
+                questionText = question.question.replace(imageMatch[0], '').trim();
+                // Create an HTML string for the image placeholder
+                imagePlaceholder = `<div class="image-placeholder">Diagram/Figure Placeholder: ${imageMatch[1]}</div>`;
+            }
+
+            // Set the question text and append the image placeholder
+            questionTextEl.innerHTML = questionText + imagePlaceholder;
+            
+            // Re-render MathJax for the question text
+            MathJax.typesetPromise([questionTextEl]).catch(err => {
+                console.log('MathJax error: ', err);
+            });
+            
+            optionsContainerEl.innerHTML = '';
+            question.options.forEach((option, index) => {
+                const optionEl = document.createElement('div');
+                optionEl.className = 'option';
+                const radio = document.createElement('input');
+                radio.type = 'radio';
+                radio.name = 'answer';
+                radio.id = `option-${index}`;
+                radio.value = index;
+                const label = document.createElement('label');
+                label.htmlFor = `option-${index}`;
+                label.innerHTML = option; 
+                optionEl.appendChild(radio);
+                optionEl.appendChild(label);
+                optionsContainerEl.appendChild(optionEl);
+                
+                // Re-render MathJax for options
+                MathJax.typesetPromise([label]).catch(err => {
+                    console.log('MathJax error in option: ', err);
+                });
+
+                radio.addEventListener('change', () => {
+                    // Disable all radios on selection
+                    document.querySelectorAll('input[name="answer"]').forEach(r => {
+                        r.disabled = true;
+                    });
+                    userAnswers[currentQuestionIndex] = index;
+                    checkAnswer(false); 
+                });
+            });
+            
+            // Handle pre-answered state
+            const selectedAnswer = userAnswers[currentQuestionIndex];
+            if (selectedAnswer !== null) {
+                document.getElementById(`option-${selectedAnswer}`).checked = true;
+                checkAnswer(true); 
+                document.querySelectorAll('input[name="answer"]').forEach(r => {
+                    r.disabled = true;
+                });
+            } else {
+                // Enable radios for new question
+                 document.querySelectorAll('input[name="answer"]').forEach(r => {
+                    r.disabled = false;
+                });
+                feedbackEl.classList.add('hidden');
+            }
+
+            if (currentQuestionIndex === questions.length - 1) {
+                nextBtn.textContent = 'Submit Quiz';
+                nextBtn.classList.add('btn-submit');
+            } else {
+                nextBtn.textContent = 'Next Question';
+                nextBtn.classList.remove('btn-submit');
+            }
+        }
+
+        function checkAnswer(isReview = false) {
+            const selectedAnswer = userAnswers[currentQuestionIndex];
+            const question = questions[currentQuestionIndex];
+            const correctAnswer = question.answer;
+            
+            // Visual feedback
+            document.querySelectorAll('.option').forEach(opt => {
+                opt.style.backgroundColor = '#222';
+            });
+
+            if (selectedAnswer !== null) {
+                const selectedOptionEl = document.querySelector(`#option-${selectedAnswer}`).closest('.option');
+                
+                if (selectedAnswer === correctAnswer) {
+                    selectedOptionEl.style.backgroundColor = '#27ae60';
+                    feedbackEl.textContent = 'Correct! Well done!';
+                    feedbackEl.className = 'feedback correct-feedback';
+                } else {
+                    selectedOptionEl.style.backgroundColor = '#e74c3c';
+                    
+                    document.querySelector(`#option-${correctAnswer}`).closest('.option').style.backgroundColor = '#27ae60';
+                    feedbackEl.textContent = 'Incorrect! The correct answer is highlighted in green.';
+                    feedbackEl.className = 'feedback incorrect-feedback';
+                }
+            } else {
+                 feedbackEl.textContent = 'Answer skipped.';
+                 feedbackEl.className = 'feedback incorrect-feedback';
+                 document.querySelectorAll('input[name="answer"]').forEach(r => {
+                    r.disabled = true;
+                });
+            }
+            
+            feedbackEl.classList.remove('hidden');
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                showQuestion();
+            } else {
+                submitQuiz();
+            }
+        }
+
+        function submitQuiz() {
+            // Final score calculation
+            correctAnswers = 0;
+            wrongAnswers = 0;
+            skippedQuestions = 0;
+
+            for (let i = 0; i < questions.length; i++) {
+                const selected = userAnswers[i];
+                const correct = questions[i].answer;
+                
+                if (selected === null) {
+                    skippedQuestions++;
+                } else if (selected === correct) {
+                    correctAnswers++;
+                } else {
+                    wrongAnswers++;
+                }
+            }
+            
+            resultNameEl.textContent = studentInfo.name;
+            resultSchoolEl.textContent = studentInfo.school;
+            resultClassEl.textContent = studentInfo.class;
+            resultChapterEl.textContent = studentInfo.chapter;
+            resultScoreEl.textContent = `${correctAnswers} out of ${questions.length}`;
+            resultCorrectEl.textContent = correctAnswers;
+            resultWrongEl.textContent = wrongAnswers;
+            resultSkippedEl.textContent = skippedQuestions;
+            
+            quizContainer.classList.add('hidden');
+            resultContainer.classList.remove('hidden');
+        }
+
+        function restartQuiz() {
+            resultContainer.classList.add('hidden');
+            formContainer.classList.remove('hidden');
+            studentNameInput.value = '';
+            schoolNameInput.value = '';
+            classSectionSelect.value = '';
+            chaptersListEl.innerHTML = ''; 
+        }
+
+        function shareViaWhatsApp() {
+            const name = studentInfo.name;
+            const score = correctAnswers;
+            const total = questions.length;
+            const chapter = studentInfo.chapter || "Selected Chapters";
+            const message = encodeURIComponent(
+                `Hi! I scored ${score}/${total} in the Class 12 Physics Quiz on "${chapter}". Try it yourself!`
+            );
+            const whatsappUrl = `https://wa.me/?text=${message}`;
+            window.open(whatsappUrl, '_blank');
+        }
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5262416738363133"
+     crossorigin="anonymous"></script>
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-format="autorelaxed"
+         data-ad-client="ca-pub-5262416738363133"
+         data-ad-slot="8413131774"></ins>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</body>
+</html>
